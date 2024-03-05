@@ -5,6 +5,7 @@ import { SDK_VERSION } from '../../version';
 import { type PaddleOptions } from '../types/config';
 import { Environment } from './environment';
 // import { randomUUID } from 'node:crypto';
+// @ts-ignore  TS7034: Variable 'randomUUID' implicitly has type 'any' in some locations where its type cannot be determined.
 let randomUUID;
 (async () => {
   const { randomUUID: cryptoRandomUUID } = await import('node:crypto');
@@ -30,6 +31,7 @@ export class Client {
   }
 
   private getHeaders() {
+    // @ts-ignore TS7005: Variable 'randomUUID' implicitly has an 'any' type.
     if (!randomUUID) throw new Error('randomUUID not initialized');
     const uuid = randomUUID();
 
