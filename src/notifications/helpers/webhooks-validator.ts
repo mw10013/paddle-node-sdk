@@ -1,9 +1,8 @@
-// import { createHmac } from 'node:crypto';
-//@ts-ignore TS7034: Variable 'createHmac' implicitly has type 'any' in some locations where its type cannot be determined.
-let createHmac;
+import type { createHmac as createHmacFn } from 'node:crypto';
+let createHmac: typeof createHmacFn;
 (async () => {
-  const { createHmac: cryptoCreateHmac } = await import('node:crypto');
-  createHmac = cryptoCreateHmac;
+  const crypto = await import('node:crypto');
+  createHmac = crypto.createHmac;
 })();
 
 interface ParsedHeaders {
@@ -41,8 +40,6 @@ export class WebhooksValidator {
       return false;
     }
 
-    // @ts-ignore TS7005: Variable 'createHmac' implicitly has an 'any' type.
-    if (!createHmac) throw new Error('createHmac not initialized');
     const hmac = createHmac('sha256', secretKey);
     hmac.update(payloadWithTime);
 
