@@ -5,13 +5,12 @@ import { SDK_VERSION } from '../../version';
 import { type PaddleOptions } from '../types/config';
 import { Environment } from './environment';
 // import { randomUUID } from 'node:crypto';
-import type { randomUUID as randomUUIDFn } from 'node:crypto';
+import type { randomUUID as randomUUIDFn } from 'crypto';
 let randomUUID: typeof randomUUIDFn;
 (async () => {
-  try {
+  if (typeof require !== 'undefined') {
     randomUUID = require('crypto').randomUUID;
-  } catch (error) {
-    console.error(error);
+  } else {
     const crypto = await import('node:crypto');
     randomUUID = crypto.randomUUID;
   }
