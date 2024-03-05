@@ -1,4 +1,9 @@
-import { createHmac } from 'node:crypto';
+// import { createHmac } from 'node:crypto';
+let createHmac;
+(async () => {
+  const { createHmac: cryptoCreateHmac } = await import('node:crypto');
+  createHmac = cryptoCreateHmac;
+})();
 
 interface ParsedHeaders {
   ts: number;
@@ -35,6 +40,7 @@ export class WebhooksValidator {
       return false;
     }
 
+    if (!createHmac) throw new Error('createHmac not initialized');
     const hmac = createHmac('sha256', secretKey);
     hmac.update(payloadWithTime);
 

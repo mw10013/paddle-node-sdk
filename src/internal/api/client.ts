@@ -4,7 +4,12 @@ import fetch from 'node-fetch';
 import { SDK_VERSION } from '../../version';
 import { type PaddleOptions } from '../types/config';
 import { Environment } from './environment';
-import { randomUUID } from 'node:crypto';
+// import { randomUUID } from 'node:crypto';
+let randomUUID;
+(async () => {
+  const { randomUUID: cryptoRandomUUID } = await import('node:crypto');
+  randomUUID = cryptoRandomUUID;
+})();
 import { Logger } from '../base/logger';
 import { convertToSnakeCase } from './case-helpers';
 import { type ErrorResponse } from '../types/response';
@@ -25,6 +30,7 @@ export class Client {
   }
 
   private getHeaders() {
+    if (!randomUUID) throw new Error('randomUUID not initialized');
     const uuid = randomUUID();
 
     return {
