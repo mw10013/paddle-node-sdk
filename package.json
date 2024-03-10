@@ -15,7 +15,8 @@
     "clean": "rm -rf ./dist",
     "release:beta": "yarn version --prerelease --preid beta --no-git-tag-version --no-commit-hooks",
     "publish:beta": "yarn publish --tag beta --access public",
-    "publish:latest": "yarn publish --access public"
+    "publish:latest": "yarn publish --access public",
+    "prepare": "yarn prebuild && yarn build"
   },
   "files": [
     "dist"
